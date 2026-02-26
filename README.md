@@ -1,4 +1,4 @@
-# Smart Civic Complaint & Monitoring System — Telangana
+# Smart Civic Complaint & Monitoring System — Irfan
 
 ## Problem
 Urban civic issues like garbage overflow, potholes, and streetlight failures are not resolved efficiently due to lack of transparency and prioritization.

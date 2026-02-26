@@ -1,51 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import CitizenDashboard from "./pages/CitizenDashboard";
 
-function App() {
-  return (
-    <div
-      style={{
-        height: "100vh",
-        backgroundColor: "#0f172a",
-        color: "white",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        fontFamily: "Arial"
-      }}
-    >
-      <h1 style={{ fontSize: "48px", marginBottom: "10px" }}>
-        SmartCivic
-      </h1>
+export default function App() {
+  const [page, setPage] = useState("home");
 
-      <p style={{ marginBottom: "40px" }}>
-        Role-Based Smart Civic Complaint System
-      </p>
+  if (page === "login") return <Login setPage={setPage} />;
+  if (page === "signup") return <Signup setPage={setPage} />;
+  if (page === "citizen") return <CitizenDashboard />;
 
-      <div>
-        <button
-          style={{
-            padding: "12px 30px",
-            marginRight: "20px",
-            fontSize: "16px",
-            cursor: "pointer"
-          }}
-        >
-          Login
-        </button>
-
-        <button
-          style={{
-            padding: "12px 30px",
-            fontSize: "16px",
-            cursor: "pointer"
-          }}
-        >
-          Signup
-        </button>
-      </div>
-    </div>
-  );
+  return <Home setPage={setPage} />;
 }
-
-export default App;

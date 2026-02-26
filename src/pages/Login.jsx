@@ -1,42 +1,27 @@
-import React, { useState } from "react";
-import { auth, db } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import React from "react";
+import "../index.css";
 
 export default function Login({ setPage }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleLogin = async () => {
-    const userCred = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-
-    const userDoc = await getDoc(doc(db, "USERS", userCred.user.uid));
-    const role = userDoc.data().role;
-
-    if (role === "citizen") setPage("citizen");
-    else if (role === "officer") setPage("officer");
-    else setPage("admin");
-  };
-
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="auth-page">
+      <div className="auth-box">
 
-      <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
-      <br />
+        <h2>Login</h2>
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={e => setPassword(e.target.value)}
-      />
-      <br />
+        <input placeholder="Email" />
+        <input type="password" placeholder="Password" />
 
-      <button onClick={handleLogin}>Login</button>
+        <button onClick={() => setPage("citizen")}>
+          Login
+        </button>
+
+        <br /><br />
+
+        <button onClick={() => setPage("signup")}>
+          Create Account
+        </button>
+
+      </div>
     </div>
   );
 }

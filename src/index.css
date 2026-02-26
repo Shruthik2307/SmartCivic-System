@@ -1,13 +1,137 @@
+/* ===== GLOBAL ===== */
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: white;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* ===== LANDING PAGE ===== */
+
+.home {
+  height: 100vh;
+  background: url("./assets/city.jpg") center/cover no-repeat;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+}
+
+/* NAVBAR */
+
+.navbar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 40px;
+}
+
+.nav-buttons button {
+  margin-left: 12px;
+  padding: 8px 16px;
+  background: #2563eb;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+/* HERO — LEFT SIDE */
+
+.hero {
+  position: relative;
+  z-index: 1;
+  height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+  padding-left: 80px;
+}
+
+.hero-content {
+  max-width: 520px;
+}
+
+.hero-content h1 {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.hero-content p {
+  color: #e5e7eb;
+  margin-bottom: 24px;
+}
+
+/* Launch button */
+
+.launch-btn {
+  padding: 12px 24px;
+  font-size: 16px;
+  background: #2563eb;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ===== AUTH PAGES ===== */
+
+.auth-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef2f7;
+  color: black;
+}
+
+.auth-box {
+  width: 380px;
+  background: white;
+  padding: 28px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.auth-box h2 {
+  text-align: center;
+}
+
+/* FORM */
+
+input, textarea {
+  width: 100%;
+  padding: 11px;
+  margin-bottom: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 11px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ===== DASHBOARD ===== */
+
+.dashboard {
+  padding: 40px;
+  background: #f3f6fb;
+  min-height: 100vh;
+  color: black;
+}
+
+.card {
+  background: white;
+  padding: 24px;
+  max-width: 640px;
+  margin: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
 }

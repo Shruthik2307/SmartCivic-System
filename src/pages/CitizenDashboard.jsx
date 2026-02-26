@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { auth, db, storage } from "../firebase";
 import { addDoc, collection, serverTimestamp, query, where, getDocs, orderBy } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -7,6 +7,9 @@ import "../index.css";
 
 export default function CitizenDashboard({ setPage }) {
   const [image, setImage] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(null);
+  const [showCamera, setShowCamera] = useState(false);
+  const videoRef = useRef(null);
   const [location, setLocation] = useState("");
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
@@ -55,7 +58,7 @@ export default function CitizenDashboard({ setPage }) {
   const getSeverity = (cat) => {
     const map = {
       Garbage: 2,
-      Pothole: 4,
+       Pothole: 4,
       Streetlight: 3,
       Drainage: 5
     };
@@ -132,6 +135,43 @@ export default function CitizenDashboard({ setPage }) {
     return { label: "Low Risk", color: "#10b981" };
   };
 
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: "environment" } 
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        setShowCamera(true);
+      }
+    } catch (err) {
+      alert("Unable to access camera. Please grant camera permission.");
+    }
+  };
+
+  const capturePhoto = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(videoRef.current, 0, 0);
+    
+    canvas.toBlob((blob) => {
+      const file = new File([blob], "captured_image.jpg", { type: "image/jpeg" });
+      setImage(file);
+      setCapturedImage(URL.createObjectURL(blob));
+      stopCamera();
+    }, "image/jpeg");
+  };
+
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach(track => track.stop());
+      setShowCamera(false);
+    }
+  };
+
   return (
     <div className="dashboard">
       <Navbar setPage={setPage} />
@@ -154,10 +194,29 @@ export default function CitizenDashboard({ setPage }) {
       {activeTab === "submit" && (
         <div className="card">
           <h2>Report an Issue</h2>
-          <div className="form-group">
-            <label>Upload Image</label>
-            <input type="file" accept="image/*" onChange={e => setImage(e.target.files[0])} />
-          </div>
+          
+          {showCamera ? (
+            <div className="camera-container">
+              <video ref={videoRef} autoPlay playsInline className="camera-preview" />
+              <div className="camera-buttons">
+                <button onClick={capturePhoto} className="capture-btn">📸 Capture</button>
+                <button onClick={stopCamera} className="cancel-btn">Cancel</button>
+              </div>
+            </div>
+          ) : (
+            <div className="form-group">
+              <label>Upload Image</label>
+              <input type="file" accept="image/*" onChange={e => setImage(e.target.files[0])} />
+              <div className="or-divider">OR</div>
+              <button onClick={startCamera} className="camera-btn">📷 Capture from Camera</button>
+              {capturedImage && (
+                <div className="captured-preview">
+                  <img src={capturedImage} alt="Captured" />
+                  <button onClick={() => { setImage(null); setCapturedImage(null); }}>Remove</button>
+                </div>
+              )}
+            </div>
+          )}
           <select value={category} onChange={e => setCategory(e.target.value)}>
             <option value="Garbage">Garbage</option>
             <option value="Pothole">Pothole</option>
